@@ -6,13 +6,15 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
+
+    public Vector2 bombOffset = new Vector2(0,1);
     
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SpawnBombAtOffset(Vector3.up);
+            SpawnBombAtOffset(bombOffset);
         }
     }
 
