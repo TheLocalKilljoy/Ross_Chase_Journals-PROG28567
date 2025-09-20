@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     public float warpRatio = 0.2f;
 
+    public float range = 5;
+
     // Update is called once per frame
     void Update()
     {
@@ -42,6 +44,8 @@ public class Player : MonoBehaviour
         {
             WarpPlayer(enemyTransform, warpRatio);
         }
+
+        DetectAsteroids(range, asteroidTransforms);
     }
 
     void SpawnBombAtOffset(Vector3 inOffset)
@@ -106,5 +110,18 @@ public class Player : MonoBehaviour
         }
 
         Debug.Log("method works");
+    }
+
+    public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids)
+    {
+        foreach (Transform t in inAsteroids) 
+        {
+            if(Vector3.Distance(transform.position, t.transform.position) <= inMaxRange) 
+            {
+                Vector3.Normalize(t.transform.position);
+
+                Debug.DrawLine(transform.position, t.transform.position, UnityEngine.Color.green);
+            }
+        }
     }
 }
