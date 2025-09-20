@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +15,8 @@ public class Player : MonoBehaviour
     public float bombTrailSpacing;
     public int numberOfTrailBombs;
 
+    Vector2 spawnCorner = new Vector2(0,1);
+
     // Update is called once per frame
     void Update()
     {
@@ -23,6 +28,11 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             SpawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            SpawnBombAtCorners(transform.position, Vector2.one);
         }
     }
 
@@ -41,4 +51,45 @@ public class Player : MonoBehaviour
             Instantiate(bombPrefab, spawn, Quaternion.identity);
     }
 
+    public void SpawnBombAtCorners(Vector2 position, Vector2 size)
+    {
+        float halfWidth = size.x / 2;
+        float halfHeight = size.y / 2;
+
+        Vector2 topLeft = position + new Vector2(-halfWidth, halfHeight);
+        Vector2 topRight = topLeft + new Vector2(size.x, 0);
+        Vector2 bottomRight = topRight + new Vector2(0, -size.y);
+        Vector2 bottomLeft = bottomRight + new Vector2(-size.x, 0);
+
+        int corner = UnityEngine.Random.Range(1, 5);
+
+        if (corner == 1) 
+        {
+            spawnCorner = topRight;
+            Instantiate(bombPrefab, spawnCorner, Quaternion.identity);
+            Debug.Log("1");
+
+        }
+        if (corner == 2) 
+        {
+            spawnCorner = topLeft;
+            Instantiate(bombPrefab, spawnCorner, Quaternion.identity);
+            Debug.Log("2");
+
+        }
+        if (corner == 3) 
+        {
+            spawnCorner = bottomLeft;
+            Instantiate(bombPrefab, spawnCorner, Quaternion.identity);
+            Debug.Log("3");
+
+        }
+        if (corner == 4) 
+        {
+            spawnCorner = bottomRight;
+            Instantiate(bombPrefab, spawnCorner, Quaternion.identity);
+            Debug.Log("4");
+
+        }
+    }
 }
