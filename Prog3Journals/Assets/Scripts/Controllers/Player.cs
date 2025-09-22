@@ -22,9 +22,14 @@ public class Player : MonoBehaviour
 
     public float range = 5;
 
+    Vector3 velocity;
+    public float maxSpeed = 1;
+
     // Update is called once per frame
     void Update()
     {
+        PlayerMovement();
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             SpawnBombAtOffset(bombOffset);
@@ -40,7 +45,7 @@ public class Player : MonoBehaviour
             SpawnBombAtCorners(transform.position, Vector2.one);
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             WarpPlayer(enemyTransform, warpRatio);
         }
@@ -123,5 +128,29 @@ public class Player : MonoBehaviour
                 Debug.DrawLine(transform.position, t.transform.position, UnityEngine.Color.green);
             }
         }
+    }
+
+    private void PlayerMovement()
+    {
+        velocity = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.LeftArrow)) 
+        {
+            velocity += maxSpeed * Vector3.left;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            velocity += maxSpeed * Vector3.right;
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            velocity += maxSpeed * Vector3.up;
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            velocity += maxSpeed * Vector3.down;
+        }
+
+        transform.position += velocity * Time.deltaTime;
     }
 }
