@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     Vector3 velocity;
     public float maxSpeed = 1;
+    public float accelerationTime = 1;
 
     // Update is called once per frame
     void Update()
@@ -132,24 +133,26 @@ public class Player : MonoBehaviour
 
     private void PlayerMovement()
     {
-        velocity = Vector3.zero;
+        float accelerationRate = maxSpeed / accelerationTime;
 
         if (Input.GetKey(KeyCode.LeftArrow)) 
         {
-            velocity += maxSpeed * Vector3.left;
+            velocity += accelerationRate * Time.deltaTime * Vector3.left;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            velocity += maxSpeed * Vector3.right;
+            velocity += accelerationRate * Time.deltaTime * Vector3.right;
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            velocity += maxSpeed * Vector3.up;
+            velocity += accelerationRate * Time.deltaTime * Vector3.up;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            velocity += maxSpeed * Vector3.down;
+            velocity += accelerationRate * Time.deltaTime * Vector3.down;
         }
+
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
 
         transform.position += velocity * Time.deltaTime;
     }
